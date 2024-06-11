@@ -19,7 +19,7 @@ const requiredFields = [
 ];
 
 const Modal = () => {
-	const [errors, setErrors] = useState<boolean>(false);
+	const [errors, setErrors] = useState<string[]>([]);
 
 	const {
 		modalState,
@@ -53,7 +53,7 @@ const Modal = () => {
 					{/* Name */}
 					<div className="w-full">
 						<TextInput
-							error={errors}
+							error={errors.indexOf("name") >= 0}
 							id="name"
 							name={"Name"}
 							currentText={modalState.name ?? ""}
@@ -68,7 +68,7 @@ const Modal = () => {
 					{/* Avatar Url */}
 					<div>
 						<TextInput
-							error={errors}
+							error={errors.indexOf("avatarUrl") >= 0}
 							id="avatarUrl"
 							name={"Avatar URL"}
 							currentText={modalState.avatarUrl ?? ""}
@@ -83,7 +83,7 @@ const Modal = () => {
 					{/* Description */}
 					<div>
 						<TextInput
-							error={errors}
+							error={errors.indexOf("description") >= 0}
 							id="description"
 							name={"Description"}
 							currentText={modalState.description ?? ""}
@@ -98,7 +98,7 @@ const Modal = () => {
 					{/* Website */}
 					<div>
 						<TextInput
-							error={errors}
+							error={errors.indexOf("website") >= 0}
 							id="website"
 							name={"Website"}
 							currentText={modalState.website ?? ""}
@@ -129,57 +129,51 @@ const Modal = () => {
 					text={"Submit"}
 					classname="w-32 absolute p-4 text-center items-center bottom-5 right-5"
 					handleClick={() => {
-						let auxError = false;
+						let pendingRequiredFields = requiredFields;
+
+						const dataKeys = Object.keys(modalState);
+
+						pendingRequiredFields = requiredFields.filter(
+							(requiredField) =>
+								dataKeys.indexOf(requiredField) < 0,
+						);
+
+						setErrors(pendingRequiredFields);
 
 						if (
-							modalState?.name &&
-							modalState?.name?.length > 0 &&
-							modalState.description &&
-							modalState.description?.length > 0 &&
+							pendingRequiredFields.length > 0 &&
+							modalState.name &&
 							modalState.avatarUrl &&
-							modalState.avatarUrl?.length > 0 &&
-							modalState.website &&
-							modalState.website?.length > 0
+							modalState.description &&
+							modalState.website
 						) {
-						} else {
-							auxError = true;
-							setErrors(true);
-						}
-
-						if (!auxError) {
 							const currentDate = new Date();
 							const isoStringDate =
 								currentDate.toISOString();
 							let auxPatients = patients;
-							if (
-								modalState.name &&
-								modalState.avatarUrl &&
-								modalState.description &&
-								modalState.website
-							) {
-								auxPatients.push({
-									createdAt: isoStringDate,
-									name: modalState.name,
-									avatar: modalState.avatarUrl,
+
+							auxPatients.push({
+								createdAt: isoStringDate,
+								name: modalState.name,
+								avatar: modalState.avatarUrl,
+								description: modalState.description,
+								website: modalState.website,
+								id: (
+									parseInt(
+										patients[patients.length - 1].id,
+									) + 1
+								).toString(),
+								params: {
 									description: modalState.description,
-									website: modalState.website,
-									id: (
-										parseInt(
-											patients[patients.length - 1].id,
-										) + 1
-									).toString(),
-									params: {
-										description: modalState.description,
-									},
-								});
+								},
+							});
 
-								setPatients(auxPatients);
+							setPatients(auxPatients);
 
-								setModalState((modalState: any) => ({
-									...modalState,
-									active: false,
-								}));
-							}
+							setModalState((modalState: any) => ({
+								...modalState,
+								active: false,
+							}));
 						}
 					}}
 				/>
