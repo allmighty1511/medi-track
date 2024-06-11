@@ -30,9 +30,12 @@ const Modal = () => {
 
 	return (
 		<div className="modalContainer">
-			<div className="modal p-4">
+			<div className="relative modal p-4">
 				{/* Close Section */}
-				<div className="flex justify-end items-center w-full">
+				<div className="flex justify-between items-center w-full mb-5">
+					<h3 className="text-xl font-semibold text-blue-900">
+						Add new patient
+					</h3>
 					<button
 						onClick={() => {
 							setModalState((modalState: any) => ({
@@ -121,64 +124,65 @@ const Modal = () => {
 							}}
 						/>
 					</div>
-					<Button
-						text={"Submit"}
-						handleClick={() => {
-							let auxError = false;
-
-							if (
-								modalState?.name &&
-								modalState?.name?.length > 0 &&
-								modalState.description &&
-								modalState.description?.length > 0 &&
-								modalState.avatarUrl &&
-								modalState.avatarUrl?.length > 0 &&
-								modalState.website &&
-								modalState.website?.length > 0
-							) {
-							} else {
-								auxError = true;
-								setErrors(true);
-							}
-
-							if (!auxError) {
-								const currentDate = new Date();
-								const isoStringDate =
-									currentDate.toISOString();
-								let auxPatients = patients;
-								if (
-									modalState.name &&
-									modalState.avatarUrl &&
-									modalState.description &&
-									modalState.website
-								) {
-									auxPatients.push({
-										createdAt: isoStringDate,
-										name: modalState.name,
-										avatar: modalState.avatarUrl,
-										description: modalState.description,
-										website: modalState.website,
-										id: (
-											parseInt(
-												patients[patients.length - 1].id,
-											) + 1
-										).toString(),
-										params: {
-											description: modalState.description,
-										},
-									});
-
-									setPatients(auxPatients);
-
-									setModalState((modalState: any) => ({
-										...modalState,
-										active: false,
-									}));
-								}
-							}
-						}}
-					/>
 				</div>
+				<Button
+					text={"Submit"}
+					classname="w-32 absolute p-4 text-center items-center bottom-5 right-5"
+					handleClick={() => {
+						let auxError = false;
+
+						if (
+							modalState?.name &&
+							modalState?.name?.length > 0 &&
+							modalState.description &&
+							modalState.description?.length > 0 &&
+							modalState.avatarUrl &&
+							modalState.avatarUrl?.length > 0 &&
+							modalState.website &&
+							modalState.website?.length > 0
+						) {
+						} else {
+							auxError = true;
+							setErrors(true);
+						}
+
+						if (!auxError) {
+							const currentDate = new Date();
+							const isoStringDate =
+								currentDate.toISOString();
+							let auxPatients = patients;
+							if (
+								modalState.name &&
+								modalState.avatarUrl &&
+								modalState.description &&
+								modalState.website
+							) {
+								auxPatients.push({
+									createdAt: isoStringDate,
+									name: modalState.name,
+									avatar: modalState.avatarUrl,
+									description: modalState.description,
+									website: modalState.website,
+									id: (
+										parseInt(
+											patients[patients.length - 1].id,
+										) + 1
+									).toString(),
+									params: {
+										description: modalState.description,
+									},
+								});
+
+								setPatients(auxPatients);
+
+								setModalState((modalState: any) => ({
+									...modalState,
+									active: false,
+								}));
+							}
+						}
+					}}
+				/>
 			</div>
 		</div>
 	);

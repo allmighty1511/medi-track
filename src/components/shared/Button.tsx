@@ -11,10 +11,12 @@ const Button = (props: IButtonProps) => {
 		<button
 			onClick={props.handleClick}
 			className={cx(
-				"flex bg-primary-500 hover:bg-primary-500 duration-300 rounded-lg",
+				"flex bg-primary-900 hover:bg-primary-500 duration-300 rounded-lg",
 				props.classname,
 			)}>
-			{props.text}
+			<p className="text-center w-full text-white font-semibold">
+				{props.text}
+			</p>
 		</button>
 	);
 };
