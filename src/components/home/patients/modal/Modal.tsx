@@ -10,6 +10,7 @@ import {
 	IPatient,
 	RequiredFields,
 } from "../../../../types";
+import { LayoutContext } from "../../../../context/LayoutContext";
 
 interface IModalProps {
 	mode: "create" | "edit";
@@ -32,11 +33,13 @@ const Modal = () => {
 		setPatients,
 	} = useContext(HomeContext);
 
+	const { setNotification } = useContext(LayoutContext);
+
 	return (
 		<div className="modalContainer">
-			<div className="relative modal p-4">
+			<div className="relative modal p-2 md:p-4">
 				{/* Close Section */}
-				<div className="flex justify-between items-center w-full mb-5">
+				<div className="flex justify-between items-center w-full mb-2 md:mb-5">
 					<h3 className="text-xl font-semibold text-blue-900">
 						Add new patient
 					</h3>
@@ -53,7 +56,7 @@ const Modal = () => {
 						</div>
 					</button>
 				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
 					{/* Name */}
 					<div className="w-full">
 						<TextInput
@@ -131,7 +134,7 @@ const Modal = () => {
 				</div>
 				<Button
 					text={"Submit"}
-					classname="w-32 absolute p-4 text-center items-center bottom-5 right-5"
+					classname="w-32 ml-auto mt-2 md:mt-0 md:absolute p-2 md:p-4 text-center items-center  bottom-2 right-2 md:bottom-5 md:right-5"
 					handleClick={() => {
 						let pendingRequiredFields = requiredFields;
 
@@ -149,8 +152,6 @@ const Modal = () => {
 								}
 							},
 						);
-
-						console.log(pendingRequiredFields);
 
 						setErrors(pendingRequiredFields);
 
@@ -192,6 +193,12 @@ const Modal = () => {
 								active: false,
 								mode: "create",
 							});
+
+							setNotification({
+								type: "successful",
+								message: `Your patient "${modalState.name}" has been created succesfully`,
+								closing: false,
+							});
 						} else if (
 							pendingRequiredFields.length <= 0 &&
 							modalState.name &&
@@ -230,6 +237,12 @@ const Modal = () => {
 							setModalState({
 								active: false,
 								mode: "create",
+							});
+
+							setNotification({
+								type: "successful",
+								message: `Your patient "${modalState.name}" has been updated succesfully`,
+								closing: false,
 							});
 						}
 					}}

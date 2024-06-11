@@ -1,12 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
 	HomeContext,
 	HomeProvider,
 } from "../context/HomeContext";
 import Layout from "../layout/Layout";
 import Patients from "../components/home/patients/Patients";
+import { LayoutContext } from "../context/LayoutContext";
+import Notifications from "../components/shared/notifications/Notifications";
 
 const Home = () => {
+
+
 	return (
 		<Layout>
 			<HomeProvider>

@@ -20,6 +20,7 @@ const Layout = (props: ILayoutProps) => {
 
 				<Footer />
 			</div>
+			
 		</LayoutProvider>
 	);
 };

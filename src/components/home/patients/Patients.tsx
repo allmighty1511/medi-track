@@ -6,6 +6,8 @@ import Loader from "../../shared/Loader";
 import AddIcon from "./assets/AddIcon";
 import Modal from "./modal/Modal";
 import { IModal } from "../../../types";
+import { LayoutContext } from "../../../context/LayoutContext";
+import Notifications from "../../shared/notifications/Notifications";
 
 const Patients = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -14,6 +16,8 @@ const Patients = () => {
 
 	const { patients, modalState, setModalState } =
 		useContext(HomeContext);
+
+	const { notification } = useContext(LayoutContext);
 
 	//Paginator variables
 	const lastIndex = currentPage * itemsPerPage;
@@ -26,6 +30,10 @@ const Patients = () => {
 	/* -- Functions -- */
 	const paginate = (pageNumber: number) =>
 		setCurrentPage(pageNumber);
+
+	useEffect(() => {
+		console.log(notification);
+	}, [notification]);
 
 	return (
 		<div className="flex flex-col gap-y-4 flex-grow justify-between items-center">
@@ -48,7 +56,7 @@ const Patients = () => {
 						{currentPatients.map((patient) => (
 							<div
 								key={patient.id}
-								className="min-h-176 overflow-hidden">
+								className="flex min-h-200 overflow-hidden">
 								<PatientCard
 									key={patient.id}
 									{...patient}
@@ -66,8 +74,8 @@ const Patients = () => {
 			) : (
 				<Loader classname="left-auto" />
 			)}
-
-			{modalState.active && <Modal />}
+			{modalState.active && <Modal />}{" "}
+			{notification && <Notifications />}
 		</div>
 	);
 };

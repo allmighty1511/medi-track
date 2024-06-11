@@ -1,15 +1,18 @@
 import { createContext, useState, ReactNode } from "react";
+import { INotification } from "../types";
 
 // Define the type for your context state
 type LayoutContextType = {
-	users: any[];
-	setUsers: (users: any[]) => void;
+	notification: INotification | undefined;
+	setNotification: (
+		notification: INotification | undefined,
+	) => void;
 };
 
 // Set the default value for the context
 const defaultContextValue: LayoutContextType = {
-	users: [],
-	setUsers: () => {},
+	notification: undefined,
+	setNotification: () => {},
 };
 
 export const LayoutContext =
@@ -23,13 +26,15 @@ type LayoutProviderProps = {
 export const LayoutProvider = ({
 	children,
 }: LayoutProviderProps) => {
-	const [users, setUsers] = useState<any[]>([]);
+	const [notification, setNotification] = useState<
+		INotification | undefined
+	>();
 
 	return (
 		<LayoutContext.Provider
 			value={{
-				users,
-				setUsers,
+				notification,
+				setNotification,
 			}}>
 			{children}
 		</LayoutContext.Provider>

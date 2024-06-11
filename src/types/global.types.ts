@@ -9,6 +9,12 @@ export interface IModal {
 	details?: string;
 }
 
+export interface INotification {
+	type: "successful" | "error";
+	message: string;
+	closing: boolean;
+}
+
 export type RequiredFields =
 	| "name"
 	| "avatarUrl"

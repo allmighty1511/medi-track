@@ -3,9 +3,11 @@ import {
 	useState,
 	ReactNode,
 	useEffect,
+	useContext,
 } from "react";
 import { patientsApi } from "../services/api";
 import { IModal, IPatient } from "../types";
+import { LayoutContext } from "./LayoutContext";
 
 // Define the type for your context state
 type HomeContextType = {

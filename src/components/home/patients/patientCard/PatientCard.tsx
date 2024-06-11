@@ -51,7 +51,7 @@ const PatientCard = (props: IPatient) => {
 		<div
 			ref={cardRef}
 			className={cx(
-				"fadeIn bg-white rounded-lg shadow-card py-5 px-4 ",
+				"fadeIn bg-white rounded-lg shadow-card py-5 px-4 flex-grow",
 				{
 					absolute: activeCard == props.id,
 					"h-76": activeCard == props.id,
@@ -93,7 +93,7 @@ const PatientCard = (props: IPatient) => {
 				{/* User Details */}
 				<div className="flex flex-col gap-y-2 ">
 					{/* Title Container */}
-					<div className="flex gap-x-4 items-center justify-start">
+					<div className="flex flex-wrap md:flex-nowrap gap-x-4 items-start md:items-center justify-start">
 						<p
 							className={cx(
 								"text-primary-900 font-semibold",
@@ -103,7 +103,7 @@ const PatientCard = (props: IPatient) => {
 							)}>
 							{props.name}
 						</p>
-						<div className="w-0.25 bg-primary-900 h-7 shrink-0">
+						<div className="hidden md:block w-0.25 bg-primary-900 h-7 shrink-0">
 							&nbsp;
 						</div>
 						{props.params?.description && (
@@ -117,7 +117,7 @@ const PatientCard = (props: IPatient) => {
 									)}>
 									{props.params.description}
 								</p>
-								<div className="w-0.25 bg-primary-900 h-7 shrink-0">
+								<div  className="hidden md:block w-0.25 bg-primary-900 h-7 shrink-0">
 									&nbsp;
 								</div>
 							</>
@@ -133,7 +133,7 @@ const PatientCard = (props: IPatient) => {
 					<p className="text-neutral-800">
 						{props.id == activeCard
 							? props.description
-							: truncateText(props.description, 230)}
+							: truncateText(props.description, 255)}
 					</p>
 				</div>
 				<CloseButton

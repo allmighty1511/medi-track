@@ -54,6 +54,7 @@ module.exports = {
 			},
 			minHeight: {
 				176: "176px",
+				200: "200px",
 			},
 			backgroundColor: ["focus-within"],
 			borderColor: ["focus-within"],
