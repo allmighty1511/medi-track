@@ -5,13 +5,17 @@ import { HomeContext } from "../../../../context/HomeContext";
 import AddIcon from "../assets/AddIcon";
 import TextInput from "../../../shared/textInput/TextInput";
 import Button from "../../../shared/Button";
-import { IModal } from "../../../../types";
+import {
+	IModal,
+	IPatient,
+	RequiredFields,
+} from "../../../../types";
 
 interface IModalProps {
 	mode: "create" | "edit";
 }
 
-const requiredFields = [
+const requiredFields: RequiredFields[] = [
 	"name",
 	"avatarUrl",
 	"description",
@@ -134,18 +138,32 @@ const Modal = () => {
 						const dataKeys = Object.keys(modalState);
 
 						pendingRequiredFields = requiredFields.filter(
-							(requiredField) =>
-								dataKeys.indexOf(requiredField) < 0,
+							(requiredField: RequiredFields) => {
+								let selectedField =
+									modalState[requiredField];
+
+								if (dataKeys.indexOf(requiredField) < 0) {
+									return true;
+								} else if (selectedField?.length == 0) {
+									return true;
+								}
+							},
 						);
+
+						console.log(pendingRequiredFields);
 
 						setErrors(pendingRequiredFields);
 
+						//Aca obviamente preferiria usar una API de manera asincronica
+
+						//Handle creation
 						if (
-							pendingRequiredFields.length > 0 &&
+							pendingRequiredFields.length <= 0 &&
 							modalState.name &&
 							modalState.avatarUrl &&
 							modalState.description &&
-							modalState.website
+							modalState.website &&
+							!modalState.id
 						) {
 							const currentDate = new Date();
 							const isoStringDate =
@@ -170,10 +188,49 @@ const Modal = () => {
 
 							setPatients(auxPatients);
 
-							setModalState((modalState: any) => ({
-								...modalState,
+							setModalState({
 								active: false,
-							}));
+								mode: "create",
+							});
+						} else if (
+							pendingRequiredFields.length <= 0 &&
+							modalState.name &&
+							modalState.avatarUrl &&
+							modalState.description &&
+							modalState.website &&
+							modalState.id
+						) {
+							let auxPatients = patients.reduce<any>(
+								(acc, el) => {
+									let updatedElement = {
+										...el,
+									};
+
+									if (el.id == modalState.id) {
+										updatedElement.avatar =
+											modalState.avatarUrl ?? "";
+										updatedElement.name =
+											modalState.name ?? "";
+										updatedElement.website =
+											modalState.website ?? "";
+										updatedElement.description =
+											modalState.description ?? "";
+										updatedElement.params = el.params && {
+											description: modalState.details ?? "",
+										};
+									}
+
+									return [...acc, updatedElement];
+								},
+								[],
+							);
+
+							setPatients(auxPatients);
+
+							setModalState({
+								active: false,
+								mode: "create",
+							});
 						}
 					}}
 				/>

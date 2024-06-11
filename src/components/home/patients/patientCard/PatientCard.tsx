@@ -6,24 +6,31 @@ import {
 } from "react";
 import { IPatient } from "../../../../types";
 import { truncateText } from "../../../../utils/helpers";
+import { HomeContext } from "../../../../context/HomeContext";
 import CloseButton from "./assets/CloseButton";
 import WebsiteIcon from "./assets/WebsiteIcon";
-import { HomeContext } from "../../../../context/HomeContext";
+import EditIcon from "./assets/EditIcon";
 import cx from "classnames";
+import "./patientCard.css";
 
 const PatientCard = (props: IPatient) => {
-	const { activeCard, setActiveCard } =
-		useContext(HomeContext);
 	const [cardWidth, setCardWidth] = useState<number>(0);
 
+	/* -- Reference -- */
 	const cardRef = useRef<HTMLDivElement>(null);
 
+	/* -- Context -- */
+	const { activeCard, setActiveCard, setModalState } =
+		useContext(HomeContext);
+
+	/* -- Handles -- */
 	const handleClose = () => {
 		setActiveCard(
 			props.id == activeCard ? undefined : props.id,
 		);
 	};
 
+	/* -- UseEffects -- */
 	useEffect(() => {
 		const handleResize = () => {
 			if (cardRef.current) {
@@ -60,12 +67,28 @@ const PatientCard = (props: IPatient) => {
 			<div className="relative flex gap-x-4">
 				{/* User Image */}
 				<div
-					className="w-20 h-20 shrink-0 rounded-full"
+					className="userImage group flex items-center justify-center w-20 h-20 shrink-0 rounded-full"
 					style={{
 						backgroundImage: `url(${props.avatar})`,
 						backgroundSize: "cover",
 						backgroundPosition: "center",
-					}}></div>
+					}}>
+					<button
+						onClick={() => {
+							setModalState((modalState: any) => ({
+								...modalState,
+								active: true,
+								id: props.id,
+								name: props.name,
+								avatarUrl: props.avatar,
+								description: props.description,
+								website: props.website,
+								details: props.params?.description,
+							}));
+						}}>
+						<EditIcon classname="group-hover:block hidden fadeIn" />
+					</button>
+				</div>
 
 				{/* User Details */}
 				<div className="flex flex-col gap-y-2 ">
@@ -110,7 +133,7 @@ const PatientCard = (props: IPatient) => {
 					<p className="text-neutral-800">
 						{props.id == activeCard
 							? props.description
-							: truncateText(props.description, 255)}
+							: truncateText(props.description, 230)}
 					</p>
 				</div>
 				<CloseButton
