@@ -1,0 +1,19 @@
+.modalContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	backdrop-filter: blur(10px);
+	background-color: #75757544;
+}
+
+.modal {
+	width: 66vw;
+	height: 60vh;
+	background-color: white;
+	border-radius: 8px;
+}

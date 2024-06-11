@@ -1,0 +1,4 @@
+.textInput:focus-within {
+	border: #2196f3 solid 1px;
+	transition-duration: ms;
+}
