@@ -1,6 +1,6 @@
 # Instrucciones
 
-Para poder correr este challenge es recomendable contar con una versión de Node superior a 20.8.0
+Para poder correr este challenge es recomendable contar con una versión de Node igual o superior a 20.8.0
 
 1. Entrar en el repositorio
 2. Correr el comando npm install
